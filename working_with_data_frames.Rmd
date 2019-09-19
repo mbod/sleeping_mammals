@@ -1,0 +1,77 @@
+---
+title: "working_with_dataframes"
+author: "mbod"
+date: "9/19/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Data Frames
+
+```{r}
+
+con_df <- data.frame(code=c('lc', 'vu', 'en', 'nt', 'cd'),
+           status=c( 'Least concern', 
+                     'Vunerable',
+                     'Endangered',
+                     'Near threatened',
+                     'Conservation dependent')
+)
+```
+
+
+```{r}
+df <- read.csv('data/sleeping_mammals.csv')
+```
+
+
+```{r}
+dim(df)
+```
+
+```{r}
+colnames(df)
+```
+
+
+```{r}
+
+df2<-merge(df, con_df, by.x='conservation', by.y='code', all.x=TRUE)
+
+
+df2
+```
+
+
+```{r}
+
+df2$status <- factor(ifelse(as.character(df2$conservation=='domesticated'),
+       'Domesticated', 
+       as.character(df2$status)))
+
+```
+
+
+```{r}
+
+aggregate( name ~ status, df2, length)
+
+```
+
+
+
+```{r}
+
+aggregate(sleep_total ~ status, df2, mean)
+
+```
+
+
+
+```{r}
+
+rank(df2$brainwt)
+```
